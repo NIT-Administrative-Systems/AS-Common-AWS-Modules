@@ -8,11 +8,11 @@ resource "aws_lb" "alb" {
   subnets            = ["${var.subnets}"]
 
   access_logs {
-    bucket  = "${aws_s3_bucket.alb_logs.name}"
+    bucket  = "${aws_s3_bucket.alb_logs.id}"
     enabled = true
   }
 
-  tags {
+  tags = {
     SharedResource = true
   }
 }
@@ -34,9 +34,5 @@ resource "aws_security_group" "lb_security_group" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags {
-    SharedResource = true
   }
 }

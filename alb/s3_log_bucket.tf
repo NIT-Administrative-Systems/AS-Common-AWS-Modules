@@ -2,12 +2,11 @@ resource "aws_s3_bucket" "alb_logs" {
   bucket = "${var.account_label}-alb-logs"
   acl    = "private"
 
-  tags {
+  tags = {
     SharedResource = true
-    Environment    = "${var.environment}"
   }
 }
-data "aws_s3_policy_document" "alb_writes_to_bucket" {
+data "aws_iam_policy_document" "alb_writes_to_bucket" {
   statement {
     effect = "Allow"
     actions = [
@@ -19,9 +18,5 @@ data "aws_s3_policy_document" "alb_writes_to_bucket" {
 
 resource "aws_s3_bucket_policy" "alb_logs" {
   bucket = "${aws_s3_bucket.alb_logs.id}"
-  policy = "${data.aws_s3_policy_document.alb_writes_to_bucket.json}"
-
-  tags {
-    SharedResource = true
-  }
+  policy = "${data.aws_iam_policy_document.alb_writes_to_bucket.json}"
 }
