@@ -1,5 +1,5 @@
 # Common AWS Modules for Admin Systems
-This contains common terraform modules for Admin Systems AWS accounts.
+This contains common terraform modules for Admin Systems AWS accounts. These modules are *opinionated*, and will do things the way Admin Systems wants.
 
 This repository is not intended to be deployable or a template. Think of it as an abstract class; it has unimplemented methods that you need to fill in.
 
