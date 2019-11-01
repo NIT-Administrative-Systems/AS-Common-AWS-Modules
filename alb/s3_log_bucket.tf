@@ -9,6 +9,12 @@ resource "aws_s3_bucket" "alb_logs" {
 data "aws_iam_policy_document" "alb_writes_to_bucket" {
   statement {
     effect = "Allow"
+    
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
     actions = [
       "s3:PutObject"
     ]
