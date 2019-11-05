@@ -12,3 +12,8 @@ output "lb_hostname" {
   description = "The hostname for the load balancer. Application CNAMEs should point to this."
   value       = "${aws_lb.alb.dns_name}"
 }
+
+output "lb_security_group_id" {
+  description = "The security group ID for the ALB -> your service. Necessary for things like ECS security policies."
+  value = "${aws_security_group.lb_security_group.name}"
+}
