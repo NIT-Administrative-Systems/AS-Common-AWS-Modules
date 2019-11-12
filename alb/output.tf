@@ -15,5 +15,5 @@ output "lb_hostname" {
 
 output "lb_security_group_id" {
   description = "The security group ID for the ALB -> your service. Necessary for things like ECS security policies."
-  value = "${aws_security_group.lb_security_group.name}"
+  value = "${aws_security_group.lb_security_group.id}"
 }
