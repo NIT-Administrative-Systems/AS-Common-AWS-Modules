@@ -26,6 +26,6 @@ resource "aws_sns_topic_subscription" "opsgenie_integration" {
 
   topic_arn              = "${element(aws_sns_topic.opsgenie_topic.*.arn, count.index)}"
   protocol               = "https"
-  endpoint               = "${element(var.teams, element(keys(var.teams), count.index))}"
+  endpoint               = "${lookup(var.teams, element(keys(var.teams), count.index))}"
   endpoint_auto_confirms = true
 }
