@@ -15,7 +15,7 @@ resource "aws_sns_topic" "opsgenie_topic" {
       "numMinDelayRetries": 0,
       "backoffFunction": "linear"
     },
-    "disableSubscriptionOverrides": false,
+    "disableSubscriptionOverrides": false
   }
 }
 EOF
