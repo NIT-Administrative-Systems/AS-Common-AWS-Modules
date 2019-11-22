@@ -9,3 +9,5 @@ These modules target Terraform 0.10.x, which is the version deployed across our 
 You can pick and choose which modules you use by extending them in your project. Here are the available modules:
 
 - [Application Load Balancer](./alb)
+- [Certificates for `entapp.northwestern.edu`](./entapp_certificate)
+- [OpsGenie Integration for CloudWatch Alarms](./opsgenie)
