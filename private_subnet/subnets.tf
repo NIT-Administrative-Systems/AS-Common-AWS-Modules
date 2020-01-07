@@ -1,0 +1,38 @@
+resource "aws_subnet" "subnet_az1" {
+  vpc_id            = "${var.vpc_id}"
+  cidr_block        = "${var.subnet_cidr_az1}"
+  availability_zone = "us-east-2a"
+
+  tags = {
+    Name = "${var.label}-az1"
+  }
+}
+
+resource "aws_subnet" "subnet_az2" {
+  vpc_id            = "${var.vpc_id}"
+  cidr_block        = "${var.subnet_cidr_az2}"
+  availability_zone = "us-east-2b"
+
+  tags = {
+    Name = "${var.label}-az2"
+  }
+}
+
+resource "aws_route_table" "route_table" {
+  vpc_id = "${var.vpc_id}"
+
+  route {
+    cidr_block     = "0.0.0.0/0"
+    nat_gateway_id = "${var.nat_gateway_id}"
+  }
+}
+
+resource "aws_route_table_association" "route_mapping_az1" {
+  subnet_id      = "${aws_subnet.subnet_az1.id}"
+  route_table_id = "${aws_route_table.route_table.id}"
+}
+
+resource "aws_route_table_association" "route_mapping_az2" {
+  subnet_id      = "${aws_subnet.subnet_az2.id}"
+  route_table_id = "${aws_route_table.route_table.id}"
+}
