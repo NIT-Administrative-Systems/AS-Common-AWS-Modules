@@ -4,7 +4,7 @@ resource "aws_subnet" "subnet_az1" {
   availability_zone = "us-east-2a"
 
   tags = {
-    Name = "${var.label}-az1"
+    Name = "${var.label}-PvtAz1"
   }
 }
 
@@ -14,7 +14,7 @@ resource "aws_subnet" "subnet_az2" {
   availability_zone = "us-east-2b"
 
   tags = {
-    Name = "${var.label}-az2"
+    Name = "${var.label}-PvtAz2"
   }
 }
 
