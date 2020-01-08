@@ -17,3 +17,8 @@ variable "nat_gateway_id" {
 variable "label" {
   description = "Label for the subnet, e.g. docconv-dev"
 }
+
+variable "enabled" {
+  description = "Whether or not to build anything at all. Useful for disabling subnet allocations in prod accounts that already have them from the pre-TF days."
+  default     = "true"
+}

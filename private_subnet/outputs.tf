@@ -1,3 +1,3 @@
 output "subnet_id_list" {
-  value = ["${aws_subnet.subnet_az1.id}", "${aws_subnet.subnet_az2.id}"]
+  value = ["${element(aws_subnet.subnet_az1.*.id, 1)}", "${element(aws_subnet.subnet_az2.*.id, 1)}"]
 }
