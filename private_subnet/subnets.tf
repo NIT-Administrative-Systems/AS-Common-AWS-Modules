@@ -36,13 +36,13 @@ resource "aws_route_table" "route_table" {
 resource "aws_route_table_association" "route_mapping_az1" {
   count = "${var.enabled == "true" ? 1 : 0}"
 
-  subnet_id      = "${aws_subnet.subnet_az1.id}"
+  subnet_id      = "${aws_subnet.subnet_az1.*.id[1]}"
   route_table_id = "${aws_route_table.route_table.id}"
 }
 
 resource "aws_route_table_association" "route_mapping_az2" {
   count = "${var.enabled == "true" ? 1 : 0}"
 
-  subnet_id      = "${aws_subnet.subnet_az2.id}"
+  subnet_id      = "${aws_subnet.subnet_az2.*.id[1]}"
   route_table_id = "${aws_route_table.route_table.id}"
 }
