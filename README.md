@@ -11,3 +11,4 @@ You can pick and choose which modules you use by extending them in your project.
 - [Application Load Balancer](./alb)
 - [Certificates for `entapp.northwestern.edu`](./entapp_certificate)
 - [OpsGenie Integration for CloudWatch Alarms](./opsgenie)
+- [Private Subnet Assignment](./private_subnet), mostly for use by the shared AWS account resource modules
