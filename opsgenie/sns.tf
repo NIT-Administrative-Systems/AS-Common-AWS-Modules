@@ -1,5 +1,5 @@
 resource "aws_sns_topic" "opsgenie_topic" {
-  count = "${length(var.teams)}"
+  count = length(var.teams)
 
   name = "OpsGenie-${element(keys(var.teams), count.index)}"
 
@@ -19,13 +19,15 @@ resource "aws_sns_topic" "opsgenie_topic" {
   }
 }
 EOF
+
 }
 
 resource "aws_sns_topic_subscription" "opsgenie_integration" {
-  count = "${length(var.teams)}"
+  count = length(var.teams)
 
-  topic_arn              = "${element(aws_sns_topic.opsgenie_topic.*.arn, count.index)}"
+  topic_arn              = element(aws_sns_topic.opsgenie_topic.*.arn, count.index)
   protocol               = "https"
-  endpoint               = "${lookup(var.teams, element(keys(var.teams), count.index))}"
+  endpoint               = var.teams[element(keys(var.teams), count.index)]
   endpoint_auto_confirms = true
 }
+
