@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "alb_writes_to_bucket" {
 
     principals {
       type = "AWS"
-      identifiers = [aws_organizations_organization.account.arn]
+      identifiers = [data.aws_organizations_organization.account.arn]
     }
 
     actions = [
