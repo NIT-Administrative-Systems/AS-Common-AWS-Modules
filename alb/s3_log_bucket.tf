@@ -18,9 +18,11 @@ data "aws_iam_policy_document" "alb_writes_to_bucket" {
 
     actions = [
       "s3:PutObject",
+      "s3:GetBucketAcl"
     ]
-    
-    resources = ["${aws_s3_bucket.alb_logs.arn}/*"]
+
+    # Needs access to both the objects (/*) and the bucket itself
+    resources = ["${aws_s3_bucket.alb_logs.arn}/*", aws_s3_bucket.alb_logs.arn]
   }
 }
 
