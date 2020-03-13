@@ -7,8 +7,10 @@ resource "aws_s3_bucket" "alb_logs" {
   }
 }
 
-# Needed for the ALB -> S3 policy so it can write logs
-data "aws_billing_service_account" "account" {}
+# Needed for the ALB -> S3 policy, so the special AWS-controlled accounts
+# can write logs to our bucket. It's weird, but that's how it works.
+data "aws_elb_service_account" "alb_log_delivery" {}
+
 
 data "aws_iam_policy_document" "alb_writes_to_bucket" {
   statement {
@@ -33,7 +35,7 @@ data "aws_iam_policy_document" "alb_writes_to_bucket" {
 
     principals {
       type = "AWS"
-      identifiers = [data.aws_billing_service_account.account.arn]
+      identifiers = [data.aws_elb_service_account.alb_log_delivery.arn]
     }
 
     actions = [
