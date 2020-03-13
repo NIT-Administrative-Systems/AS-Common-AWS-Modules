@@ -12,13 +12,14 @@ data "aws_iam_policy_document" "alb_writes_to_bucket" {
     effect = "Allow"
 
     principals {
-      type        = "AWS"
-      identifiers = ["*"]
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]
     }
 
     actions = [
       "s3:PutObject",
     ]
+    
     resources = ["${aws_s3_bucket.alb_logs.arn}/*"]
   }
 }
