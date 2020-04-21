@@ -14,6 +14,14 @@ variable "nat_gateway_id" {
   description = "NAT gateway ID for reaching the internet"
 }
 
+variable "transit_gateway_id" {
+  description = "NAT gateway ID for reaching the internet"
+}
+
+variable "transit_gw_routes" {
+  description = "NAT gateway ID for reaching the internet"
+}
+
 variable "label" {
   description = "Label for the subnet, e.g. docconv-dev"
 }
