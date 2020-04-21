@@ -12,10 +12,12 @@ variable "subnet_cidr_az2" {
 
 variable "nat_gateway_id" {
   description = "NAT gateway ID for reaching the internet"
+  default = ""
 }
 
 variable "transit_gateway_id" {
   description = "NAT gateway ID for reaching the internet"
+  default = []
 }
 
 variable "transit_gw_routes" {
