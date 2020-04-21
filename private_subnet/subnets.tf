@@ -31,6 +31,17 @@ resource "aws_route_table" "route_table" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = var.nat_gateway_id
   }
+
+
+
+  dynamic "route" {
+    for_each = var.transit_gw_routes
+
+    content {
+      cidr_block = route.value
+      transit_gateway_id = var.transit_gateway_id
+    }
+  }
 }
 
 resource "aws_route_table_association" "route_mapping_az1" {
