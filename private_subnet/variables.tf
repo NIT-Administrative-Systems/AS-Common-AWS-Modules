@@ -16,12 +16,13 @@ variable "nat_gateway_id" {
 }
 
 variable "transit_gateway_id" {
-  description = "NAT gateway ID for reaching the internet"
-  default = []
+  description = "Trasnit gateway ID used for routing traffic over the VPNi.   The current default is the AWS transit gateway for all accounts, but could change."
+  default = "tgw-05a25479d60902394"
 }
 
 variable "transit_gw_routes" {
-  description = "NAT gateway ID for reaching the internet"
+  description = "List of CIDRs that you want routed over the transit gateway instead of the public internet"
+  default = []
 }
 
 variable "label" {
