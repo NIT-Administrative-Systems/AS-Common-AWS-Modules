@@ -16,7 +16,7 @@ variable "nat_gateway_id" {
 }
 
 variable "transit_gateway_id" {
-  description = "Trasnit gateway ID used for routing traffic over the VPNi.   The current default is the AWS transit gateway for all accounts, but could change."
+  description = "Transit gateway ID used for routing traffic over the VPN. The current default is the AWS transit gateway for all accounts, but could change."
   default = "tgw-05a25479d60902394"
 }
 
@@ -33,4 +33,3 @@ variable "enabled" {
   description = "Whether or not to build anything at all. Useful for disabling subnet allocations in prod accounts that already have them from the pre-TF days."
   default     = "true"
 }
-
