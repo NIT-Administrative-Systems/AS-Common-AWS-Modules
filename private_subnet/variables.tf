@@ -12,6 +12,17 @@ variable "subnet_cidr_az2" {
 
 variable "nat_gateway_id" {
   description = "NAT gateway ID for reaching the internet"
+  default = ""
+}
+
+variable "transit_gateway_id" {
+  description = "Transit gateway ID used for routing traffic over the VPN. The current default is the AWS transit gateway for all accounts, but could change."
+  default = "tgw-05a25479d60902394"
+}
+
+variable "transit_gw_routes" {
+  description = "List of CIDRs that you want routed over the transit gateway instead of the public internet"
+  default = []
 }
 
 variable "label" {
@@ -22,4 +33,3 @@ variable "enabled" {
   description = "Whether or not to build anything at all. Useful for disabling subnet allocations in prod accounts that already have them from the pre-TF days."
   default     = "true"
 }
-
