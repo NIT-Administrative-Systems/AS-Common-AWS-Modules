@@ -66,13 +66,13 @@ resource "aws_route_table_association" "route_mapping_az1" {
   count = var.enabled == "true" ? 1 : 0
 
   subnet_id      = aws_subnet.subnet_az1[0].id
-  route_table_id = aws_route_table.route_table[0].id
+  route_table_id = aws_route_table.route_table_az1[0].id
 }
 
 resource "aws_route_table_association" "route_mapping_az2" {
   count = var.enabled == "true" ? 1 : 0
 
   subnet_id      = aws_subnet.subnet_az2[0].id
-  route_table_id = aws_route_table.route_table[0].id
+  route_table_id = aws_route_table.route_table_az2[0].id
 }
 
