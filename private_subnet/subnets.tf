@@ -32,6 +32,10 @@ resource "aws_route_table" "route_table_az1" {
     nat_gateway_id = var.nat_gateway_id_az1
   }
 
+  route {
+    cidr_block = var.subnet_cidr_az2
+  }
+
   dynamic "route" {
     for_each = var.transit_gw_routes
 
@@ -50,6 +54,10 @@ resource "aws_route_table" "route_table_az2" {
   route {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = var.nat_gateway_id_az2
+  }
+
+  route {
+    cidr_block = var.subnet_cidr_az1
   }
 
   dynamic "route" {
