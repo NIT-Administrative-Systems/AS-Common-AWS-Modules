@@ -6,6 +6,7 @@ resource "aws_lb" "alb" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.lb_security_group.id]
   subnets            = var.subnets
+  idle_timeout       = var.idle_timeout
 
   access_logs {
     bucket  = aws_s3_bucket.alb_logs.id

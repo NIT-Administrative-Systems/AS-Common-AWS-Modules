@@ -16,3 +16,8 @@ variable "subnets" {
   type        = list(string)
 }
 
+variable "idle_timeout" {
+  description = "Number of seconds to keep idle connections open"
+  default = "60"
+}
+
