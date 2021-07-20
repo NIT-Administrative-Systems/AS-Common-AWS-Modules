@@ -1,5 +1,5 @@
 output "subnet_id_list" {
     value = {
-        for k, v in aws_subnet : k => v.id
+        for k, v in aws_subnet.subnets : k => v.id
     }
 }
