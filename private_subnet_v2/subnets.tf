@@ -20,23 +20,32 @@ resource "aws_subnet" "subnets" {
     }
 }
 
-resource "aws_route_table" "route_table" {
-//  no for_each here so we can use count
-  count = var.enabled == "true" ? 1 : 0
+resource "aws_route_table" "route_tables" {
+//  count = var.enabled == "true" ? 1 : 0
+  for_each = toset(var.nat_gateway_id_list)
 
   vpc_id = var.vpc_id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = var.nat_gateway_id
+    nat_gateway_id = each.key
+  }
+
+  dynamic "route" {
+    for_each = var.transit_gw_routes
+
+    content {
+      cidr_block = route.value
+      transit_gateway_id = var.transit_gateway_id
+    }
   }
 }
 
 resource "aws_route_table_association" "route_mappings" {
-  for_each = { for  k, v in aws_subnet.subnets : k => v if var.enabled }
+  count = var.enabled ? length(aws_subnet.subnets) : 0
 
-//  my IDE doesn't like each.value.id but I'm not sure why - or what the proper syntax would be
-  subnet_id      = each.value.id
-  route_table_id = aws_route_table.route_table[0].id
+//  can't zipmap these as they have values known only after apply
+  subnet_id      = aws_subnet.subnets[count.index].id
+  route_table_id = aws_route_table.route_tables[count.index].id
 }
 
