@@ -43,8 +43,8 @@ resource "aws_route_table" "route_tables" {
 resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(var.subnet_cidr_list) : 0
 
-//  this monstrosity takes the map of map of subnets, finds the subnet map corresponding to count.index, and isolates its id
-//  to visualize: lookup({{map_one}, {map_two}}, map_one, default) gets us to map_one = {key:value} so we do another lookup to get the value of the the key "id"
+  //  this monstrosity takes the map of map of subnets, finds the subnet map corresponding to count.index, and isolates its id
+  //  to visualize: lookup({{map_one}, {map_two}}, map_one, default) gets us to map_one = {key:value} so we do another lookup to get the value of the the key "id"
   subnet_id = values(lookup(lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], count.index), "id", count.index))
   route_table_id = lookup(element(aws_route_table.route_tables, count.index), "id", count.index)
 }
