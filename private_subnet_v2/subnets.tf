@@ -22,7 +22,8 @@ resource "aws_subnet" "subnets" {
 
 resource "aws_route_table" "route_tables" {
 //  count = var.enabled == "true" ? 1 : 0
-  for_each = toset(var.nat_gateway_id_list)
+//  for_each = var.nat_gateway_id_list
+  for_each = var.nat_gateway_id_list
 
   vpc_id = var.vpc_id
 
