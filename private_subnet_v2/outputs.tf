@@ -3,11 +3,9 @@
 
 output "subnet_id_list" {
 //    value = tolist(lookup(values(aws_subnet.subnets), "id", 0))
-    value = flatten([
+    value = tolist([
       for subnet in keys(aws_subnet.subnets) : [
-        for id in aws_subnet.subnets[subnet] : [
-          id
-        ]
+          lookup(subnet, "id", 0)
       ]
     ])
 }
