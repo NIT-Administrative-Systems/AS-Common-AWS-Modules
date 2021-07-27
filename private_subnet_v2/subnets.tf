@@ -60,10 +60,10 @@ resource "aws_route_table_association" "route_mappings" {
 
 //  can't zipmap these as they have values known only after apply
 //  subnet_id      = aws_subnet.subnets[count.index].id
-  subnet_id      = flatten([for id in aws_subnet.subnets : {subnet_id = id}])[count].id
+  subnet_id      = flatten([for id in aws_subnet.subnets : {subnet_id = id}])[count.index].id
   # subnet_id      = flatten([aws_subnet.subnets])[count].id
 //  route_table_id = aws_route_table.route_tables[count.index].id
   # route_table_id = flatten([for id in aws_route_table.route_tables : {route_table_id = id}])[count]
-  route_table_id = flatten([for id in aws_route_table.route_tables : {id = id}])[count].id
+  route_table_id = flatten([for id in aws_route_table.route_tables : {id = id}])[count.index].id
 }
 
