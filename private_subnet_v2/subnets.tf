@@ -22,15 +22,16 @@ resource "aws_subnet" "subnets" {
 }
 
 resource "aws_route_table" "route_tables" {
-//  count = var.enabled == "true" ? 1 : 0
+  count = var.enabled == "true" ? length(local.NAT_Gateway_set) : 0
 //  for_each = toset(var.nat_gateway_id_list)
-  for_each = local.NAT_Gateway_set
+//  for_each = local.NAT_Gateway_set
 
   vpc_id = var.vpc_id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = each.key
+//    nat_gateway_id = each.key
+    nat_gateway_id = local.NAT_Gateway_set[count.index]
   }
 
   dynamic "route" {
