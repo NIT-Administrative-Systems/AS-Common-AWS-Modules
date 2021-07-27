@@ -9,7 +9,6 @@ locals {
 resource "aws_subnet" "subnets" {
 //  this should create nothing if enabled = false, as we cannot use count and for_each
     for_each = { for  k, v in local.CIDR_AZ_map.value : k => v if var.enabled }
-//    count = "${var.enabled == "true" ? 1 : 0}"
 
     vpc_id = var.vpc_id
     cidr_block = each.key
@@ -23,14 +22,11 @@ resource "aws_subnet" "subnets" {
 
 resource "aws_route_table" "route_tables" {
   count = var.enabled == "true" ? length(var.nat_gateway_id_list) : 0
-//  for_each = toset(var.nat_gateway_id_list)
-//  for_each = local.NAT_Gateway_set
 
   vpc_id = var.vpc_id
 
   route {
     cidr_block     = "0.0.0.0/0"
-//    nat_gateway_id = each.key
     nat_gateway_id = var.nat_gateway_id_list[count.index]
   }
 
@@ -47,11 +43,9 @@ resource "aws_route_table" "route_tables" {
 resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(var.subnet_cidr_list) : 0
 
-//  subnet_id = lookup(element(keys(aws_subnet.subnets), count.index), "id", "NO SUBNET ID HERE")
-  subnet_id = lookup(lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], count.index), "id", count.index)
+//  this monstrosity takes the map of map of subnets, finds the subnet map corresponding to count.index, and isolates its id
+//  to visualize: lookup({{map_one}, {map_two}}, map_one, default) gets us to map_one = {key:value} so we do another lookup to get the value of the the key "id"
+  subnet_id = values(lookup(lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], count.index), "id", count.index))
   route_table_id = lookup(element(aws_route_table.route_tables, count.index), "id", count.index)
-//  route_table_id = lookup(aws_route_table.route_tables, "id", count.index)
-  //  subnet_id      = aws_subnet.subnets[count.index].id
-//  route_table_id = aws_route_table.route_tables[count.index].id
 }
 
