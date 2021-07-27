@@ -44,26 +44,7 @@ resource "aws_route_table" "route_tables" {
 resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(aws_subnet.subnets) : 0
 
-  # dynamic "subnet_id" {
-  #   for_each = aws_subnet.subnets
-  #   content {
-  #     subnet_id = each.value.id
-  #   }
-  # }
-
-  # dynamic "route_table_id" {
-  #   for_each = aws_route_table.route_tables
-  #   content {
-  #     route_table_id = each.value.id
-  #   }
-  # }
-
-//  can't zipmap these as they have values known only after apply
-//  subnet_id      = aws_subnet.subnets[count.index].id
-  subnet_id      = flatten([for id in aws_subnet.subnets : {subnet_id = id}])[count.index].id
-  # subnet_id      = flatten([aws_subnet.subnets])[count].id
-//  route_table_id = aws_route_table.route_tables[count.index].id
-  # route_table_id = flatten([for id in aws_route_table.route_tables : {route_table_id = id}])[count]
-  route_table_id = flatten([for id in aws_route_table.route_tables : {id = id}])[count.index].id
+  subnet_id      = aws_subnet.subnets[count.index].id
+  route_table_id = aws_route_table.route_tables[count.index].id
 }
 
