@@ -48,7 +48,7 @@ resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(var.subnet_cidr_list) : 0
 
 //  subnet_id = lookup(element(keys(aws_subnet.subnets), count.index), "id", "NO SUBNET ID HERE")
-  subnet_id = lookup(aws_subnet.subnets, "id", count.index)
+  subnet_id = lookup(lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], count.index), "id", count.index)
   route_table_id = lookup(element(aws_route_table.route_tables, count.index), "id", count.index)
 //  route_table_id = lookup(aws_route_table.route_tables, "id", count.index)
   //  subnet_id      = aws_subnet.subnets[count.index].id
