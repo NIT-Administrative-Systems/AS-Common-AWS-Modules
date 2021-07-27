@@ -3,6 +3,7 @@ locals {
   CIDR_AZ_map = {
     value = zipmap(var.subnet_cidr_list, var.availability_zone_list)
   }
+  NAT_Gateway_set = toset(var.nat_gateway_id_list)
 }
 
 resource "aws_subnet" "subnets" {
@@ -22,8 +23,8 @@ resource "aws_subnet" "subnets" {
 
 resource "aws_route_table" "route_tables" {
 //  count = var.enabled == "true" ? 1 : 0
-//  for_each = var.nat_gateway_id_list
-  for_each = var.nat_gateway_id_list
+//  for_each = toset(var.nat_gateway_id_list)
+  for_each = local.NAT_Gateway_set
 
   vpc_id = var.vpc_id
 
