@@ -43,8 +43,8 @@ resource "aws_route_table" "route_tables" {
 
 resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(aws_subnet.subnets) : 0
-  
-  subnet_id      = aws_subnet.subnets[*].id
-  route_table_id = aws_route_table.route_tables[*].id
+
+  subnet_id      = aws_subnet.subnets[count.index].id
+  route_table_id = aws_route_table.route_tables[count.index].id
 }
 
