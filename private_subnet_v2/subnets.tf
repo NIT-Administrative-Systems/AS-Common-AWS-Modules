@@ -6,7 +6,8 @@ locals {
 }
 
 resource "aws_subnet" "subnets" {
-//  this should create nothing if enabled = false, as we cannot use count and for_each
+//  Normally we would just use for_each to create a resource for every key/value pair. However, we want to create NO resources if var.enabled = false.
+//  This iterates over the zipmap without modifying its contents, but creates no resources if enabled = false. As we cannot use count and for_each at the same time
     for_each = { for  k, v in local.CIDR_AZ_map.value : k => v if var.enabled }
 //    count = "${var.enabled == "true" ? 1 : 0}"
 
