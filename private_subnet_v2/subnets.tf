@@ -5,7 +5,11 @@ locals {
   }
   NAT_Gateway_list = tolist(var.nat_gateway_id_list)
   Default = {
-    "key" = "value"
+    "key": "value",
+    vpc_id: "you shouldn't get here",
+    cidr_block: "the default should never run",
+    availability_zone: "nowhere"
+
   }
 }
 
