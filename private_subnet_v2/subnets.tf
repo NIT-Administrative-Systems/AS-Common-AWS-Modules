@@ -4,13 +4,14 @@ locals {
     value = zipmap(var.subnet_cidr_list, var.availability_zone_list)
   }
   NAT_Gateway_list = tolist(var.nat_gateway_id_list)
-  Default = {
-    "key": "value",
-    vpc_id: "you shouldn't get here",
-    cidr_block: "the default should never run",
-    availability_zone: "nowhere"
-
-  }
+  Default = object({
+    vpc_id: string,
+    cidr_block: string,
+    availability_zone: string
+    tags: object({
+      Name: string
+    })
+  })
 }
 
 resource "aws_subnet" "subnets" {
@@ -52,7 +53,9 @@ resource "aws_route_table_association" "route_mappings" {
   
   //  this monstrosity takes the map of map of subnets, finds the subnet map corresponding to count.index, and isolates its id
   //  to visualize: lookup({{map_one}, {map_two}}, map_one, default) gets us to map_one = {key:value} so we do another lookup to get the value of the the key "id"
-  subnet_id = lookup(lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], local.Default), "id", count.index)
+  subnet_id = lookup(
+    lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], local.Default),
+     "id", count.index)
   route_table_id = lookup(element(aws_route_table.route_tables, count.index), "id", count.index)
 }
 
