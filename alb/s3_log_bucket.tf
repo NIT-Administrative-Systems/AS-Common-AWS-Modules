@@ -1,10 +1,15 @@
 resource "aws_s3_bucket" "alb_logs" {
   bucket = "${var.account_label}-alb-logs"
-  acl    = "private"
 
   tags = {
     SharedResource = true
   }
+}
+
+
+resource "aws_s3_bucket_acl" "alb_log_bucket_acl" {
+  bucket = aws_s3_bucket.alb_logs.id
+  acl    = "private"
 }
 
 # Needed for the ALB -> S3 policy, so the special AWS-controlled accounts
