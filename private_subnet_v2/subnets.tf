@@ -44,6 +44,7 @@ resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(var.subnet_cidr_list) : 0
 
   subnet_id = aws_subnet.subnets[count.index].id
+  subnet_id = {for subnet in aws_subnets.subnets : subnet.id}
 
   //  this monstrosity takes the map of map of subnets, finds the subnet map corresponding to count.index, and isolates its id
   //  to visualize: lookup({{map_one}, {map_two}}, map_one, default) gets us to map_one = {key:value} so we do another lookup to get the value of the the key "id"
