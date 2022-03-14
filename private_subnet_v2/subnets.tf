@@ -43,16 +43,30 @@ resource "aws_route_table" "route_tables" {
 resource "aws_route_table_association" "route_mappings" {
   count = var.enabled ? length(var.subnet_cidr_list) : 0
 
-  # subnet_id = aws_subnet.subnets[count.index].id
 
   # the for loop returns a list of ids, we use the current count to access the index of the id we want 
   subnet_id = element([for subnet in aws_subnet.subnets : subnet.id], count.index)
-
-  //  this monstrosity takes the map of map of subnets, finds the subnet map corresponding to count.index, and isolates its id
-  //  to visualize: lookup({{map_one}, {map_two}}, map_one, default) gets us to map_one = {key:value} so we do another lookup to get the value of the the key "id"
-  # subnet_id = lookup(
-  #   lookup(aws_subnet.subnets, keys(aws_subnet.subnets)[count.index], local.Default),
-  #    "id", count.index)
   route_table_id = lookup(element(aws_route_table.route_tables, count.index), "id", 0)
 }
 
+# @TODO
+/**
+Casey suggested inputting our subnets/AZs/NATs like this (from the shared resources IAC) so they're easier to iterate over, rather than zipping lists into maps
+
+az_mappings = {
+  az1 = {
+    nat_gateway_id = "something something"
+    az_id = "something something"
+    cidr = "something something"
+  },
+  az2 = {
+    nat_gateway_id = "something something"
+    az_id = "something something"
+    cidr = "something something"
+  },
+  az3 = {
+    nat_gateway_id = "something something"
+    az_id = "something something"
+    cidr = "something something"
+  }
+*/
