@@ -3,7 +3,7 @@ This contains common terraform modules for Admin Systems AWS accounts. These mod
 
 This repository is not intended to be deployable or a template. Think of it as an abstract class; it has unimplemented methods that you need to fill in.
 
-These modules target Terraform 0.10.x, which is the version deployed across our Jenkins fleet.
+These modules target Terraform 1.x
 
 ## Available Modules
 You can pick and choose which modules you use by extending them in your project. Here are the available modules:
@@ -12,3 +12,4 @@ You can pick and choose which modules you use by extending them in your project.
 - [Certificates for `entapp.northwestern.edu`](./entapp_certificate)
 - [OpsGenie Integration for CloudWatch Alarms](./opsgenie)
 - [Private Subnet Assignment](./private_subnet), mostly for use by the shared AWS account resource modules
+- [Private Subnet Assignment v2](./private_subnet_v2), mostly for use by the shared AWS account resource modules, supports more than 2 AZ zones

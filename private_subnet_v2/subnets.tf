@@ -3,13 +3,13 @@ locals {
   CIDR_AZ_map = {
     value = zipmap(var.subnet_cidr_list, var.availability_zone_list)
   }
+  NAT_Gateway_list = tolist(var.nat_gateway_id_list)
 }
 
 resource "aws_subnet" "subnets" {
 //  Normally we would just use for_each to create a resource for every key/value pair. However, we want to create NO resources if var.enabled = false.
 //  This iterates over the zipmap without modifying its contents, but creates no resources if enabled = false. As we cannot use count and for_each at the same time
     for_each = { for  k, v in local.CIDR_AZ_map.value : k => v if var.enabled }
-//    count = "${var.enabled == "true" ? 1 : 0}"
 
     vpc_id = var.vpc_id
     cidr_block = each.key
@@ -22,14 +22,13 @@ resource "aws_subnet" "subnets" {
 }
 
 resource "aws_route_table" "route_tables" {
-//  count = var.enabled == "true" ? 1 : 0
-  for_each = toset(var.nat_gateway_id_list)
+  count = var.enabled == "true" ? length(var.nat_gateway_id_list) : 0
 
   vpc_id = var.vpc_id
 
   route {
     cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = each.key
+    nat_gateway_id = var.nat_gateway_id_list[count.index]
   }
 
   dynamic "route" {
@@ -43,10 +42,32 @@ resource "aws_route_table" "route_tables" {
 }
 
 resource "aws_route_table_association" "route_mappings" {
-  count = var.enabled ? length(aws_subnet.subnets) : 0
+  count = var.enabled ? length(var.subnet_cidr_list) : 0
 
-//  can't zipmap these as they have values known only after apply
-  subnet_id      = aws_subnet.subnets[count.index].id
-  route_table_id = aws_route_table.route_tables[count.index].id
+
+  # the for loop returns a list of ids, we use the current count to access the index of the id we want 
+  subnet_id = element([for subnet in aws_subnet.subnets : subnet.id], count.index)
+  route_table_id = lookup(element(aws_route_table.route_tables, count.index), "id", 0)
 }
 
+# @TODO
+/**
+Casey suggested inputting our subnets/AZs/NATs like this (from the shared resources IAC) so they're easier to iterate over, rather than zipping lists into maps
+
+az_mappings = {
+  az1 = {
+    nat_gateway_id = "something something"
+    az_id = "something something"
+    cidr = "something something"
+  },
+  az2 = {
+    nat_gateway_id = "something something"
+    az_id = "something something"
+    cidr = "something something"
+  },
+  az3 = {
+    nat_gateway_id = "something something"
+    az_id = "something something"
+    cidr = "something something"
+  }
+*/

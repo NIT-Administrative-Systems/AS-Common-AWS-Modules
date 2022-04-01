@@ -4,14 +4,20 @@ variable "vpc_id" {
 
 variable "subnet_cidr_list" {
   description = "IP blocks for multiple AZs. Minimum size is a /28"
+  type = list
+  default = []
 }
 
 variable "availability_zone_list" {
   description = "list of availability zones within the VPC"
+  type = list
+  default = []
 }
 
 variable "nat_gateway_id_list" {
   description = "NAT gateway IDs for reaching the internet"
+  type = list
+  default = []
 }
 
 variable "transit_gateway_id" {

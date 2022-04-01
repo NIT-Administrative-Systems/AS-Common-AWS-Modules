@@ -1,7 +1,7 @@
 resource "aws_sns_topic" "opsgenie_topic" {
-  count = "${length(var.teams)}"
+  for_each = var.teams
 
-  name = "OpsGenie-${element(keys(var.teams), count.index)}"
+  name = "OpsGenie-${each.key}"
 
   delivery_policy = <<EOF
 {
@@ -19,13 +19,15 @@ resource "aws_sns_topic" "opsgenie_topic" {
   }
 }
 EOF
+
 }
 
 resource "aws_sns_topic_subscription" "opsgenie_integration" {
-  count = "${length(var.teams)}"
+  for_each = var.teams
 
-  topic_arn              = "${element(aws_sns_topic.opsgenie_topic.*.arn, count.index)}"
+  topic_arn              = aws_sns_topic.opsgenie_topic[each.key].arn
   protocol               = "https"
-  endpoint               = "${lookup(var.teams, element(keys(var.teams), count.index))}"
+  endpoint               = each.value
   endpoint_auto_confirms = true
 }
+

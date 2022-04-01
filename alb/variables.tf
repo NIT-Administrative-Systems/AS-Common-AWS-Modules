@@ -13,5 +13,11 @@ variable "vpc_id" {
 
 variable "subnets" {
   description = "Minimum of two subnet IDs for the ALB to live in. You should probably use the PubAZ1 and PubAZ2 subnets attached to your VPC."
-  type        = "list"
+  type        = list(string)
 }
+
+variable "idle_timeout" {
+  description = "Number of seconds to keep idle connections open"
+  default = "60"
+}
+

@@ -1,5 +1,6 @@
 variable "teams" {
-  type = "map"
+  type = map(string)
 
   description = "Map of teamname => OpsGenie URLs"
 }
+
